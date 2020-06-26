@@ -1,0 +1,67 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'weather/css/mycss.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.css">
+
+    <title>Weather Web</title>
+  </head>
+  <body>
+    <form class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2">
+        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search"
+            aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </form>
+    <div class='container'>
+        <div class="body-top">
+            <div class="weather">
+                <div class="current">
+                    {% for data_dic in data_list %}
+                    <div class="info">
+                        
+                        <div>&nbsp;</div>
+                        <div class="city"><small>City: <small></small></small> {{data_dic.tentp}}
+                            <div class="descript"><small>Description: <small></small></small>{{data_dic.w_descript}}</div>
+                        </div>
+                        <div class="wind"><small>Temperature: </small>{{data_dic.feel_like}} &deg;<small>F</small></div>
+                        
+                        <div class="wind"><small>Cloud: <small></small></small> {{data_dic.cloud}}%</div>
+                        <div class="wind"><small>Wind Speed: <small></small></small>{{data_dic.wind_speed}} km/h</div>
+                        
+                    
+                        
+                        <div>&nbsp;</div>
+                    </div>
+                    
+                    {% endfor %}
+                    {% comment %} <div class="icon">
+                        <span class="wi-day-sunny"></span>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+        <div class='body-bot'>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4803.253554442145!2d106.68224068396762!3d10.762056485821516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1b888ab357%3A0xc469f6e800231314!2zMjgwIEFuIETGsMahbmcgVsawxqFuZywgUGjGsOG7nW5nIDQsIFF14bqtbiA1LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1593203466662!5m2!1svi!2s" width="1120" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        </div>
+    </div>
+
+
+
+    <link rel="stylesheet" type="text/css" href="/Content/css/weather-icons/css/weather-icons.min.css" />
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
