@@ -3,38 +3,52 @@ import json
 import cx_Oracle
 import config as cfg
 
-r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=London&APPID=d49f79067d9e4be6851eb68c3cdf03b6')
-tmp = r.json()
-# lay cac truong du lieu
-maqg = tmp["sys"]["country"]
-tentp = tmp["name"]
-kinhdo = tmp["coord"]["lon"]
-vido = tmp["coord"]["lat"]
-timezone = tmp["timezone"]
-feel_like = tmp["main"]["feels_like"]
-temp_min = tmp["main"]["temp_min"]
-temp_max = tmp["main"]["temp_max"]
-humidity = tmp["main"]["humidity"]
-w = tmp["weather"]
-w_descript = next((item.get("description") for item in w if item["description"]), None)
-w_main = next((item.get("main") for item in w if item["description"]), None)
-cloud = tmp["clouds"]["all"]
-wind_speed = tmp["wind"]["speed"]
-wind_deg = tmp["wind"]["deg"]
-# rain = tmp[""]
-# snow
+id_citys = []
 
-dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='orcl')
-conn = cx_Oracle.connect(user='phapnm', password='123', dsn=dsn_tns)
-sql = ('insert into wcurrent(maqg, tentp, kinhdo, vido, timezone, feel_like, temp_min, temp_max, humidity, w_descript, w_main, cloud, wind_speed, wind_deg) '
-           'values(:maqg, :tentp, :kinhdo, :vido, :timezone, :feel_like, :temp_min, :temp_max, :humidity, :w_descript, :w_main, :clound, :wind_speed, :wind_deg)')
+with open("city.json", encoding="utf8") as f:
+    d = json.load(f)
+    n = len(d)
+    for i in range(n):
+        name = d[i].get("id")
+        id_citys.append(name)
+#print(id_citys[1620:1630])
 
-try:
-    with conn.cursor() as cursor:
-        cursor.execute(sql, [maqg, tentp, kinhdo, vido, timezone, feel_like, temp_min, temp_max, humidity, w_descript, w_main, cloud, wind_speed, wind_deg])
-        conn.commit()
-except cx_Oracle.Error as error:
-    print('Error')
+
+for id_city in id_citys[:]:
+    
+    r = requests.get('http://api.openweathermap.org/data/2.5/weather?id={idcity}&APPID=d49f79067d9e4be6851eb68c3cdf03b6'.format(idcity=id_city))
+    tmp = r.json()
+    # lay cac truong du lieu
+    maqg = tmp["sys"]["country"]
+    tentp = tmp["name"]
+    idtp = tmp["id"]
+    kinhdo = tmp["coord"]["lon"]
+    vido = tmp["coord"]["lat"]
+    timezone = tmp["timezone"]
+    feel_like = tmp["main"]["feels_like"]
+    temp_min = tmp["main"]["temp_min"]
+    temp_max = tmp["main"]["temp_max"]
+    humidity = tmp["main"]["humidity"]
+    w = tmp["weather"]
+    w_descript = next((item.get("description") for item in w if item["description"]), None)
+    w_main = next((item.get("main") for item in w if item["description"]), None)
+    cloud = tmp["clouds"]["all"]
+    wind_speed = tmp["wind"]["speed"]
+    wind_deg = tmp["wind"]["deg"]
+    # rain = tmp[""]
+    # snow
+
+    dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='orcl')
+    conn = cx_Oracle.connect(user='phapnm', password='123', dsn=dsn_tns, encoding="utf-8")
+    sql = ('insert into weather_current(maqg, tentp, idtp, kinhdo, vido, timezone, feel_like, temp_min, temp_max, humidity, w_descript, w_main, cloud, wind_speed, wind_deg) '
+            'values(:maqg, :tentp, :idtp, :kinhdo, :vido, :timezone, :feel_like, :temp_min, :temp_max, :humidity, :w_descript, :w_main, :clound, :wind_speed, :wind_deg)')
+
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(sql, [maqg, tentp, idtp, kinhdo, vido, timezone, feel_like, temp_min, temp_max, humidity, w_descript, w_main, cloud, wind_speed, wind_deg])
+            conn.commit()
+    except cx_Oracle.Error as error:
+        print('Error')
 
 
 # conn.close()
